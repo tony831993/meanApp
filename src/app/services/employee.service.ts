@@ -26,4 +26,8 @@ export class EmployeeService {
   updateEmployee(emp: EmployeeModel) {
     return this.http.put(`${this.url}/${emp._id}`, emp)
   }
+
+  getEmployeeById(empId: any) {
+    return this.http.get(`${this.url}/${empId}`);
+  }
 }

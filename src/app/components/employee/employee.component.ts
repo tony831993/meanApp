@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from '../services/employee.service';
-import { EmployeeModel } from '../models/employee.model';
+import { EmployeeService } from '../../services/employee.service';
+import { EmployeeModel } from '../../models/employee.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -16,9 +17,10 @@ export class EmployeeComponent implements OnInit {
 
   employees: EmployeeModel[] = [];
 
-  constructor(private fb: FormBuilder, private empService: EmployeeService) {
+  constructor(private fb: FormBuilder, private empService: EmployeeService, private router: Router) {
 
   }
+
   ngOnInit(): void {
     this.getEmployees();
 
@@ -50,7 +52,7 @@ export class EmployeeComponent implements OnInit {
 
   onEmpSubmit() {
     if (this.empForm.valid) {
-      if(this.editMode) {
+      if (this.editMode) {
         this.empService.updateEmployee(this.empForm.value).subscribe((res) => {
           this.getEmployees();
           this.onCloseModal();
@@ -65,7 +67,7 @@ export class EmployeeComponent implements OnInit {
           console.log('Error Add Employee: ', error);
         });
       }
-      
+
     }
   }
 
@@ -76,13 +78,17 @@ export class EmployeeComponent implements OnInit {
   }
 
   onDeleteEmployee(id: any) {
-    if(confirm('Do you really want to delete this emplyee data?')) {
+    if (confirm('Do you really want to delete this emplyee data?')) {
       this.empService.deleteEmployee(id).subscribe((res) => {
         this.getEmployees();
       }, (error) => {
         console.log('Error Delete Employee: ', error);
       })
     }
+  }
+
+  navigateEmploye(id: any) {
+    this.router.navigate([`employee`, id]);
   }
 
 }

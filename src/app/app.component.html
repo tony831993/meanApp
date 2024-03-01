@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" [routerLink]="['/']">
       <h1>Employee MEAN APP</h1>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -10,5 +10,5 @@
   </div>
 </nav>
 <div class="container my-2 py-3">
-  <app-employee></app-employee>
+  <router-outlet></router-outlet>
 </div>
