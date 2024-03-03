@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
 import { EmployeeModel } from '../../models/employee.model';
 import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import { GetEmployee } from 'src/app/store/actions/employee.action';
+import { Observable, Subscription } from 'rxjs';
+import { EmployeeState } from 'src/app/store/state/employee.state';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
 
   empForm !: FormGroup;
   showModal: boolean = false;
   editMode: boolean = false;
 
   employees: EmployeeModel[] = [];
+  @Select(EmployeeState.getEmployeeList) employees$ !: Observable<EmployeeModel[]>;
+  @Select(EmployeeState.employeeLoaded) employeesLoaded$ !: Observable<boolean>;
+  employeeLoadedSub!: Subscription;
 
-  constructor(private fb: FormBuilder, private empService: EmployeeService, private router: Router) {
+  constructor(private fb: FormBuilder, private empService: EmployeeService, private router: Router, private store: Store) {
 
   }
 
   ngOnInit(): void {
     this.getEmployees();
-
+    // Not needed as employee$ observable can be used in HTML
+    // this.employees$.subscribe((res) => {
+    //   this.employees = res;
+    // });
     this.empForm = this.fb.group({
       _id: [''],
       name: ['Alex Johnson', Validators.required],
@@ -33,11 +43,16 @@ export class EmployeeComponent implements OnInit {
   }
 
   getEmployees() {
-    this.empService.getEmployeeList().subscribe((res: any) => {
-      this.employees = res.data;
-    }, (error) => {
-      console.log('Error GetEmployees: ', error);
+    this.employeeLoadedSub = this.employeesLoaded$.subscribe((employeeLoaded) => {
+      if (!employeeLoaded) {
+        this.store.dispatch(new GetEmployee());
+      }
     });
+    // this.empService.getEmployeeList().subscribe((res: any) => {
+    //   this.employees = res.data;
+    // }, (error) => {
+    //   console.log('Error GetEmployees: ', error);
+    // });
   }
 
   onAddEmployee() {
@@ -89,6 +104,10 @@ export class EmployeeComponent implements OnInit {
 
   navigateEmploye(id: any) {
     this.router.navigate([`employee`, id]);
+  }
+
+  ngOnDestroy(): void {
+    this.employeeLoadedSub.unsubscribe();
   }
 
 }

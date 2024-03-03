@@ -11,6 +11,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { SingleEmployeeComponent } from './components/single-employee/single-employee.component';
+import { EmployeeState } from './store/state/employee.state';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { SingleEmployeeComponent } from './components/single-employee/single-emp
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxsModule.forRoot([]),
+    NgxsModule.forRoot([EmployeeState]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot()
   ],
