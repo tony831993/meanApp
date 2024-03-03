@@ -4,7 +4,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { EmployeeModel } from '../../models/employee.model';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { GetEmployee } from 'src/app/store/actions/employee.action';
+import { AddEmployee, DeleteEmployee, GetEmployee, UpdateEmployee } from 'src/app/store/actions/employee.action';
 import { Observable, Subscription } from 'rxjs';
 import { EmployeeState } from 'src/app/store/state/employee.state';
 
@@ -36,9 +36,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     // });
     this.empForm = this.fb.group({
       _id: [''],
-      name: ['Alex Johnson', Validators.required],
-      position: ['Full Stack Developer', Validators.required],
-      department: ['Development', Validators.required]
+      name: ['', Validators.required],
+      position: ['', Validators.required],
+      department: ['', Validators.required]
     })
   }
 
@@ -68,21 +68,24 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   onEmpSubmit() {
     if (this.empForm.valid) {
       if (this.editMode) {
-        this.empService.updateEmployee(this.empForm.value).subscribe((res) => {
-          this.getEmployees();
-          this.onCloseModal();
-        }, (error) => {
-          console.log('Error Employee Update: ', error);
-        });
+        this.store.dispatch(new UpdateEmployee(this.empForm.value));
+        // this.empService.updateEmployee(this.empForm.value).subscribe((res) => {
+        //   this.getEmployees();
+        //   // this.onCloseModal();
+        // }, (error) => {
+        //   console.log('Error Employee Update: ', error);
+        // });
       } else {
-        this.empService.addEmployee(this.empForm.value).subscribe((res) => {
-          this.getEmployees();
-          this.onCloseModal();
-        }, (error) => {
-          console.log('Error Add Employee: ', error);
-        });
+        this.store.dispatch(new AddEmployee(this.empForm.value));
+        // this.onCloseModal();
+        // this.empService.addEmployee(this.empForm.value).subscribe((res) => {
+        //   this.getEmployees();
+        //   this.onCloseModal();
+        // }, (error) => {
+        //   console.log('Error Add Employee: ', error);
+        // });
       }
-
+      this.onCloseModal();
     }
   }
 
@@ -94,11 +97,12 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   onDeleteEmployee(id: any) {
     if (confirm('Do you really want to delete this emplyee data?')) {
-      this.empService.deleteEmployee(id).subscribe((res) => {
-        this.getEmployees();
-      }, (error) => {
-        console.log('Error Delete Employee: ', error);
-      })
+      this.store.dispatch(new DeleteEmployee(id));
+      // this.empService.deleteEmployee(id).subscribe((res) => {
+      //   this.getEmployees();
+      // }, (error) => {
+      //   console.log('Error Delete Employee: ', error);
+      // })
     }
   }
 

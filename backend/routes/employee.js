@@ -56,7 +56,8 @@ router.post('/add', async (req, res) => {
             success = true;
             res.send({
                 success: success,
-                message: 'Employee data added successfully.'
+                message: 'Employee data added successfully.',
+                data: savedEmployee
             })
         } else {
             res.status(400).json({ success, message: `Unable to save employee data.` });
@@ -91,7 +92,8 @@ router.put('/:id', async (req, res) => {
             success = true;
             res.send({
                 success: success,
-                message: 'Employee data updated successfully.'
+                message: 'Employee data updated successfully.',
+                data: empData
             });
         } else {
             res.status(400).json({ success, message: `Unable to perform update operation.` });
