@@ -10,7 +10,10 @@ import { EmployeeState } from 'src/app/store/state/employee.state';
 @Component({
   selector: 'app-single-employee',
   templateUrl: './single-employee.component.html',
-  styleUrls: ['./single-employee.component.scss']
+  styleUrls: [
+    './single-employee.component.scss',
+    '../employee/employee.component.scss'
+  ]
 })
 export class SingleEmployeeComponent implements OnInit, OnDestroy {
 
