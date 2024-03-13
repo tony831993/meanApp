@@ -12,12 +12,14 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { SingleEmployeeComponent } from './components/single-employee/single-employee.component';
 import { EmployeeState } from './store/state/employee.state';
+import { ChildComponent } from './components/child/child.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeComponent,
-    SingleEmployeeComponent
+    SingleEmployeeComponent,
+    ChildComponent
   ],
   imports: [
     BrowserModule,

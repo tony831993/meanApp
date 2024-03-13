@@ -24,6 +24,12 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   @Select(EmployeeState.employeeLoaded) employeesLoaded$ !: Observable<boolean>;
   employeeLoadedSub!: Subscription;
 
+  aquaticCreatures = ['shark', 'dolphin', 'octopus'];
+
+  addAquaticCreature(newAquaticCreature: string) {
+    this.aquaticCreatures.push(newAquaticCreature);
+  }
+
   constructor(private fb: FormBuilder, private empService: EmployeeService, private router: Router, private store: Store) {
 
   }
